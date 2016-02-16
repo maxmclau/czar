@@ -1,4 +1,0 @@
-[submodule "src/lwm"]
-	path = src/lwm
-	url = git@github.com:maxmclau/arduino-lwm.git
-	branch = include

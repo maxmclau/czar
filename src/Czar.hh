@@ -1,5 +1,5 @@
-#ifndef CZAR_HH_
-#define CZAR_HH_
+#ifndef _CZAR_HH_
+#define _CZAR_HH_
 
 //#define DEBUG
 #ifdef DEBUG
@@ -18,11 +18,11 @@
 #include <lwm/sys/sysTimer.h>
 #include <lwm/phy/atmegarfr2.h>
 
-class Czar {
+class CzarController {
 
   public:
-    Czar();
-    Czar();
+    CzarController();
+    ~CzarController();
 
     void setup();
     void loop();
@@ -31,5 +31,7 @@ class Czar {
     // Name of the sketch (e.g. "Bootstrap")
     const char *sketchName;
 };
+
+extern CzarController Czar;
 
 #endif

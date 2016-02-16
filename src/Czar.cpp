@@ -2,18 +2,19 @@
 
 #include <Czar.hh>
 
-Czar::Czar() {
+CzarController Czar;
+
+CzarController::CzarController() {
 }
 
-Czar::~Czar() { }
+CzarController::~CzarController() { }
 
-void Czar::setup() {
+void CzarController::setup() {
   SYS_Init();
-  PHY_RandomReq();
 
   Serial.begin( 115200 );
 }
 
-void Czar::loop() {
+void CzarController::loop() {
   SYS_TaskHandler();
 }

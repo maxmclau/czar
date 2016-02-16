@@ -1,5 +1,5 @@
-#ifndef CZAR_H_
-#define CZAR_H_
+#ifndef _CZAR_H_
+#define _CZAR_H_
 
 #include <Czar.hh>
 

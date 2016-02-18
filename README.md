@@ -9,14 +9,15 @@
 
 ### Usage
 
-    void setup() {
-      Czar.setup();
-    }
+```
+void setup() {
+    Czar.setup();
+}
     
-    void loop() {
-      Czar.loop();
-    }
-
+void loop() {
+Czar.loop();
+}
+```
 
 ### License
 

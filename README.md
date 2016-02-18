@@ -4,8 +4,8 @@
 
 ### Install
 
-    cd ~/Documents/Arduino/libraries
-    git clone https://github.com/moa/czar-lib.git
+    $ cd ~/Documents/Arduino/libraries
+    $ git clone https://github.com/moa/czar-lib.git
 
 ### Usage
 
@@ -15,7 +15,7 @@ void setup() {
 }
     
 void loop() {
-Czar.loop();
+    Czar.loop();
 }
 ```
 

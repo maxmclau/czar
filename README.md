@@ -23,4 +23,4 @@ void loop() {
 
 ### License
 
-`Atmel Limited License`
+**`Atmel Limited License`**

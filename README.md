@@ -9,7 +9,7 @@
 
 ### Usage
 
-```
+```Arduino
 void setup() {
     Czar.setup();
 }

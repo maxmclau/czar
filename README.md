@@ -4,8 +4,10 @@
 
 ### Install
 
-    $ cd ~/Documents/Arduino/libraries
-    $ git clone https://github.com/moa/czar-lib.git
+```Shell
+$ cd ~/Documents/Arduino/libraries
+$ git clone https://github.com/moa/czar-lib.git
+```
 
 ### Usage
 

@@ -2,14 +2,14 @@
 
 [Atmel Lightweight Mesh](http://www.atmel.com/tools/lightweight_mesh.aspx) abstraction layer written in C++.
 
-##### Install
+#### Install
 
 ```Shell
 $ cd ~/Documents/Arduino/libraries
 $ git clone https://github.com/moa/czar-lib.git
 ```
 
-##### Usage
+#### Usage
 
 ```Arduino
 void setup() {
@@ -21,6 +21,6 @@ void loop() {
 }
 ```
 
-##### License
+#### License
 
 **`Atmel Limited License`**

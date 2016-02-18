@@ -18,6 +18,6 @@
     }
 
 
-#### License
+### License
 
 Atmel Limited License

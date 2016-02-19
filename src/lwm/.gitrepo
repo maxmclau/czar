@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:maxmclau/lwm.git
+	branch = include
+	commit = 0719888a76ff49c0cceaac6b62a4e7ffb4ea28c1
+	parent = 70dc5cd4a3b602c80e1a9da94d9f417da17035b6
+	cmdver = 0.3.0

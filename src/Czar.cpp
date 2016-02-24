@@ -1,6 +1,5 @@
 #include <Arduino.h>
-
-#include <Czar.hh>
+#include "Czar.h"
 
 CzarController Czar;
 
@@ -10,11 +9,9 @@ CzarController::CzarController() {
 CzarController::~CzarController() { }
 
 void CzarController::setup() {
-  SYS_Init();
-
-  Serial.begin( 115200 );
+  delay(1000);
 }
 
 void CzarController::loop() {
-  SYS_TaskHandler();
+  delay(1000);
 }

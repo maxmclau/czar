@@ -12,7 +12,6 @@ class CzarController {
     void loop();
 
   protected:
-    void checkStateChange();
 
 };
 

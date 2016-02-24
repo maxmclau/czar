@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@github.com:maxmclau/lwm.git
 	branch = include
-	commit = 0719888a76ff49c0cceaac6b62a4e7ffb4ea28c1
-	parent = 70dc5cd4a3b602c80e1a9da94d9f417da17035b6
+	commit = 4dc57112223c45f1e3cac662461fb23b6d764fc2
+	parent = 6a2b38ac69a49de10288d9f8010865d0cb8aa37c
 	cmdver = 0.3.0

@@ -51,7 +51,7 @@ extern "C" {
 #define _SYS_CONFIG_H_
 
 /*- Includes ---------------------------------------------------------------*/
-#include "../../../config.h"
+#include "../../lwm.h"
 
 /*- Definitions ------------------------------------------------------------*/
 #ifndef NWK_BUFFERS_AMOUNT

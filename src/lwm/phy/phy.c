@@ -1,4 +1,3 @@
-#include "../../../config.h"
 /**
  * \file phy.c
  *
@@ -44,6 +43,7 @@
  * $Id: phy.c 9267 2014-03-18 21:46:19Z ataradov $
  *
  */
+#include "../../lwm.h"
 
 #ifdef PHY_ATMEGARFR2
 

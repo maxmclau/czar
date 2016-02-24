@@ -1,4 +1,3 @@
-#include "../../../config.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -47,6 +46,7 @@ extern "C" {
  * $Id: sysTypes.h 9267 2014-03-18 21:46:19Z ataradov $
  *
  */
+#include "../../lwm.h"
 
 #ifndef _SYS_TYPES_H_
 #define _SYS_TYPES_H_

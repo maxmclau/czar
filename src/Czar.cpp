@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "Czar.h"
 
+#include <EEPROM.h>
+
 CzarController Czar;
 
 CzarController::CzarController() {
@@ -9,7 +11,17 @@ CzarController::CzarController() {
 
 CzarController::~CzarController() { }
 
-void CzarController::setup() {
+void CzarController::setup(uint16_t eepromAddress, bool isVerbose) {
+  _configuration = getConfigurationFromEeprom(eepromAddress);
+
+  setDataRate(_configuration.dataRate);
+  setTransmitPower(_configuration.transmitPower);
+  setChannel(_configuration.channel);
+  setPanId(_configuration.panId);
+  setAddress(_configuration.address);
+
+  _isVerbose = isVerbose;
+
   SYS_Init();
 }
 
@@ -37,6 +49,10 @@ bool CzarController::isInGroup(uint16_t groupAddress) {
   return NWK_GroupIsMember(groupAddress);
 }
 
+void CzarController::setSecurityKey(const uint8_t *securityKey) {
+  NWK_SetSecurityKey((uint8_t *)securityKey);
+}
+
 void CzarController::setDataRate(const uint8_t dataRate) {
   /* Page 123 of the 256RFR2 datasheet
       0   250 kb/s  | -100 dBm
@@ -45,7 +61,7 @@ void CzarController::setDataRate(const uint8_t dataRate) {
       3   2000 kb/s |  -86 dBm
   */
   TRX_CTRL_2_REG_s.oqpskDataRate = dataRate;
-  _dataRate = dataRate;
+  _configuration.dataRate = dataRate;
 }
 
 void CzarController::setTransmitPower(const uint8_t transmitPower) {
@@ -68,50 +84,50 @@ void CzarController::setTransmitPower(const uint8_t transmitPower) {
       15 -16.5 dBm
   */
   PHY_SetTxPower(transmitPower);
-  _transmitPower = transmitPower;
+  _configuration.transmitPower = transmitPower;
 }
 
 void CzarController::setChannel(const uint8_t channel) {
   PHY_SetChannel(channel);
-  _channel = channel;
+  _configuration.channel = channel;
 }
 
 void CzarController::setPanId(const int16_t panId) {
   NWK_SetPanId(panId);
-  _panId = panId;
+  _configuration.panId = panId;
 }
 
 void CzarController::setAddress(const int16_t address) {
   NWK_SetAddr(address);
-  _address = address;
+  _configuration.address = address;
 }
 
 uint16_t CzarController::getGroupAddress() {
-  return _groupAddress;
+  return _configuration.groupAddress;
 }
 
 uint8_t CzarController::getDataRate() {
-  return _dataRate;
+  return _configuration.dataRate;
 }
 
 uint8_t CzarController::getTransmitPower() {
-  return _transmitPower;
+  return _configuration.transmitPower;
 }
 
 int8_t CzarController::getChannel() {
-  return _channel;
+  return _configuration.channel;
 }
 
 int16_t CzarController::getPanId() {
-  return _panId;
+  return _configuration.panId;
 }
 
 int16_t CzarController::getAddress() {
-  return _address;
+  return _configuration.address;
 }
 
 const char* CzarController::getTransmitPowerDb() {
-  switch (_transmitPower) {
+  switch (_configuration.transmitPower) {
     case 0:
       return PSTR("3.5 dBm");
       break;
@@ -167,7 +183,7 @@ const char* CzarController::getTransmitPowerDb() {
 }
 
 const char* CzarController::getDataRateKbps() {
-  switch (_dataRate) {
+  switch (_configuration.dataRate) {
     case 0:
       return PSTR("250 kb/s");
       break;
@@ -184,4 +200,12 @@ const char* CzarController::getDataRateKbps() {
       return PSTR("Unknown");
       break;
   }
+}
+
+CzarConfiguration CzarController::getConfigurationFromEeprom(uint16_t eepromAddress) {
+  CzarConfiguration configuration;
+
+  EEPROM.get(eepromAddress, configuration);
+
+  return configuration;
 }

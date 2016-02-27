@@ -2,7 +2,6 @@
 #define _CZAR_H_
 
 #include <Arduino.h>
-//#include <EEPROM.h>
 
 #include <lwm.h>
 #include "lwm/phy/phy.h"
@@ -14,16 +13,13 @@
   #include "lwm/phy/atmegarfr2.h"
 #endif // PHY_ATMEGARFR2
 
-struct CzarEepromStruct {
-
-  byte networkSecurityKey[16];
-
-  uint8_t dataRate;
-  uint8_t transmitPower;
-
-  int8_t channel;
-  int16_t panId;
-  int16_t address;
+struct CzarConfiguration {
+  uint16_t groupAddress = 0xFFFF;
+  uint8_t dataRate = 0;
+  uint8_t transmitPower = 0;
+  uint8_t channel = 20;
+  uint16_t panId =  0xFFFF;
+  uint16_t address = 0;
 };
 
 class CzarController {
@@ -32,7 +28,7 @@ class CzarController {
     CzarController();
     ~CzarController();
 
-    void setup();
+    void setup(uint16_t eepromAddress, bool isVerbose);
     void loop();
 
     void listen(uint8_t endpoint, bool (*handler)(NWK_DataInd_t *ind));
@@ -41,13 +37,14 @@ class CzarController {
     void leaveGroup(uint16_t groupAddress);
     bool isInGroup(uint16_t groupAddress);
 
+    void setSecurityKey(const uint8_t *securityKey);
     void setDataRate(const uint8_t dataRate);
-    void setTransmitPower(const uint8_t txPower);
+    void setTransmitPower(const uint8_t transmitPower);
     void setChannel(const uint8_t channel);
     void setPanId(const int16_t panId);
     void setAddress(const int16_t address);
 
-    uint16_t getGroupAddress();
+    uint16_t getGroupAddress(void);
 
     uint8_t getDataRate();
     uint8_t getTransmitPower();
@@ -59,14 +56,12 @@ class CzarController {
     const char* getDataRateKbps();
 
   private:
-    uint16_t _groupAddress;
-    uint8_t _dataRate;
-    uint8_t _transmitPower;
-    uint8_t _channel;
-    uint16_t _panId;
-    uint16_t _address;
+    CzarConfiguration _configuration;
+    bool _isVerbose;
+
+    CzarConfiguration getConfigurationFromEeprom(uint16_t eepromAddress);
 };
 
 extern CzarController Czar;
 
-#endif
+#endif // _CZAR_H_

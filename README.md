@@ -6,7 +6,7 @@
 
 ```Shell
 $ cd ~/Documents/Arduino/libraries
-$ git clone https://github.com/moa/czar-lib.git
+$ git clone https://github.com/moa/czar.git
 ```
 
 #### Usage
@@ -20,6 +20,10 @@ void loop() {
     Czar.loop();
 }
 ```
+
+#### Configuration
+
+Don't forgot about the lwm.h file in your build - referenced in the lwm [**`documentation`**](https://github.com/moa/lwm#configuration).
 
 #### License
 

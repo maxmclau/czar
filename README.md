@@ -13,7 +13,7 @@ $ git clone https://github.com/moa/czar.git
 
 ```Arduino
 void setup() {
-    Czar.setup();
+    Czar.setup(0, true);
 }
     
 void loop() {

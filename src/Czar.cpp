@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include "Czar.h"
 
-#include <EEPROM.h>
-
 CzarController Czar;
+
+CzarConfiguration _configuration;
 
 CzarController::CzarController() {
 
@@ -12,8 +12,6 @@ CzarController::CzarController() {
 CzarController::~CzarController() { }
 
 void CzarController::setup(uint16_t eepromAddress, bool isVerbose) {
-  _configuration = getConfigurationFromEeprom(eepromAddress);
-
   setDataRate(_configuration.dataRate);
   setTransmitPower(_configuration.transmitPower);
   setChannel(_configuration.channel);
@@ -49,8 +47,9 @@ bool CzarController::isInGroup(uint16_t groupAddress) {
   return NWK_GroupIsMember(groupAddress);
 }
 
-void CzarController::setSecurityKey(const uint8_t *securityKey) {
-  NWK_SetSecurityKey((uint8_t *)securityKey);
+void CzarController::setReceiverState(bool receiverState) {
+  PHY_SetRxState(receiverState);
+  _configuration.receiverState = receiverState;
 }
 
 void CzarController::setDataRate(const uint8_t dataRate) {
@@ -92,18 +91,22 @@ void CzarController::setChannel(const uint8_t channel) {
   _configuration.channel = channel;
 }
 
-void CzarController::setPanId(const int16_t panId) {
+void CzarController::setPanId(const uint16_t panId) {
   NWK_SetPanId(panId);
   _configuration.panId = panId;
 }
 
-void CzarController::setAddress(const int16_t address) {
+void CzarController::setAddress(const uint16_t address) {
   NWK_SetAddr(address);
   _configuration.address = address;
 }
 
 uint16_t CzarController::getGroupAddress() {
   return _configuration.groupAddress;
+}
+
+bool CzarController::getReceiverState() {
+  return _configuration.receiverState;
 }
 
 uint8_t CzarController::getDataRate() {
@@ -114,15 +117,19 @@ uint8_t CzarController::getTransmitPower() {
   return _configuration.transmitPower;
 }
 
-int8_t CzarController::getChannel() {
+uint8_t CzarController::getBand() {
+  return _configuration.band;
+}
+
+uint8_t CzarController::getChannel() {
   return _configuration.channel;
 }
 
-int16_t CzarController::getPanId() {
+uint16_t CzarController::getPanId() {
   return _configuration.panId;
 }
 
-int16_t CzarController::getAddress() {
+uint16_t CzarController::getAddress() {
   return _configuration.address;
 }
 
@@ -200,12 +207,4 @@ const char* CzarController::getDataRateKbps() {
       return PSTR("Unknown");
       break;
   }
-}
-
-CzarConfiguration CzarController::getConfigurationFromEeprom(uint16_t eepromAddress) {
-  CzarConfiguration configuration;
-
-  EEPROM.get(eepromAddress, configuration);
-
-  return configuration;
 }

@@ -14,9 +14,11 @@
 #endif // PHY_ATMEGARFR2
 
 struct CzarConfiguration {
+  uint8_t receiverState = 0;
   uint16_t groupAddress = 0xFFFF;
   uint8_t dataRate = 0;
   uint8_t transmitPower = 0;
+  uint8_t band = 0;
   uint8_t channel = 20;
   uint16_t panId =  0xFFFF;
   uint16_t address = 0;
@@ -37,20 +39,23 @@ class CzarController {
     void leaveGroup(uint16_t groupAddress);
     bool isInGroup(uint16_t groupAddress);
 
-    void setSecurityKey(const uint8_t *securityKey);
+    void setReceiverState(bool receiverState);
     void setDataRate(const uint8_t dataRate);
     void setTransmitPower(const uint8_t transmitPower);
+    void setBand(const uint8_t band);
     void setChannel(const uint8_t channel);
-    void setPanId(const int16_t panId);
-    void setAddress(const int16_t address);
+    void setPanId(const uint16_t panId);
+    void setAddress(const uint16_t address);
 
     uint16_t getGroupAddress(void);
 
+    bool getReceiverState();
     uint8_t getDataRate();
     uint8_t getTransmitPower();
-    int8_t getChannel();
-    int16_t getPanId();
-    int16_t getAddress();
+    uint8_t getBand();
+    uint8_t getChannel();
+    uint16_t getPanId();
+    uint16_t getAddress();
 
     const char* getTransmitPowerDb();
     const char* getDataRateKbps();
@@ -58,8 +63,6 @@ class CzarController {
   private:
     CzarConfiguration _configuration;
     bool _isVerbose;
-
-    CzarConfiguration getConfigurationFromEeprom(uint16_t eepromAddress);
 };
 
 extern CzarController Czar;

@@ -27,4 +27,4 @@ Don't forgot about the lwm.h file in your build - referenced in the lwm [**`docu
 
 #### License
 
-**`Apache 2.0`**
+[**`MIT`**](LICENSE)

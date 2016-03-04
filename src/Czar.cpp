@@ -1,24 +1,30 @@
+// The MIT License (MIT)
+// Copyright (c) 2016 Maxmillion McLaughlin
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
 #include <Arduino.h>
 #include "Czar.h"
 
 CzarController Czar;
 
-CzarConfiguration _configuration;
+static void commandReqConf(NWK_DataReq_t *req);
+CzarCommandReq_t commandReq(commandReqConf);
 
-CzarController::CzarController() {
-
-}
+CzarController::CzarController() { }
 
 CzarController::~CzarController() { }
 
-void CzarController::setup(uint16_t eepromAddress, bool isVerbose) {
-  setDataRate(_configuration.dataRate);
-  setTransmitPower(_configuration.transmitPower);
-  setChannel(_configuration.channel);
-  setPanId(_configuration.panId);
-  setAddress(_configuration.address);
-
-  _isVerbose = isVerbose;
+void CzarController::init(bool isVerbose) {
+	_isVerbose = isVerbose;
 
   SYS_Init();
 }
@@ -31,9 +37,19 @@ void CzarController::listen(uint8_t endpoint, bool (*handler)(NWK_DataInd_t *ind
   NWK_OpenEndpoint(endpoint, handler);
 }
 
+static void commandReqConf(NWK_DataReq_t *req) {
+  if (NWK_SUCCESS_STATUS == req->status) {
+
+  } else {
+
+  }
+}
+
 void CzarController::joinGroup(uint16_t groupAddress) {
   if (!isInGroup(groupAddress)) {
     NWK_GroupAdd(groupAddress);
+    NWK_Busy();
+		_groupAddress = groupAddress;
   }
 }
 
@@ -49,7 +65,7 @@ bool CzarController::isInGroup(uint16_t groupAddress) {
 
 void CzarController::setReceiverState(bool receiverState) {
   PHY_SetRxState(receiverState);
-  _configuration.receiverState = receiverState;
+  _receiverState = receiverState;
 }
 
 void CzarController::setDataRate(const uint8_t dataRate) {
@@ -60,7 +76,7 @@ void CzarController::setDataRate(const uint8_t dataRate) {
       3   2000 kb/s |  -86 dBm
   */
   TRX_CTRL_2_REG_s.oqpskDataRate = dataRate;
-  _configuration.dataRate = dataRate;
+  _dataRate = dataRate;
 }
 
 void CzarController::setTransmitPower(const uint8_t transmitPower) {
@@ -83,128 +99,133 @@ void CzarController::setTransmitPower(const uint8_t transmitPower) {
       15 -16.5 dBm
   */
   PHY_SetTxPower(transmitPower);
-  _configuration.transmitPower = transmitPower;
+  _transmitPower = transmitPower;
+}
+
+void CzarController::setBand(const uint8_t band) {
+	PHY_SetBand(band);
+	_band = band;
 }
 
 void CzarController::setChannel(const uint8_t channel) {
   PHY_SetChannel(channel);
-  _configuration.channel = channel;
+  _channel = channel;
 }
 
 void CzarController::setPanId(const uint16_t panId) {
   NWK_SetPanId(panId);
-  _configuration.panId = panId;
+  _panId = panId;
 }
 
 void CzarController::setAddress(const uint16_t address) {
   NWK_SetAddr(address);
-  _configuration.address = address;
+  _address = address;
 }
 
-uint16_t CzarController::getGroupAddress() {
-  return _configuration.groupAddress;
+uint16_t CzarController::getGroupAddress(void) {
+  return _groupAddress;
 }
 
-bool CzarController::getReceiverState() {
-  return _configuration.receiverState;
+bool CzarController::getReceiverState(void) {
+  return _receiverState;
 }
 
-uint8_t CzarController::getDataRate() {
-  return _configuration.dataRate;
+uint8_t CzarController::getDataRate(void) {
+  return _dataRate;
 }
 
-uint8_t CzarController::getTransmitPower() {
-  return _configuration.transmitPower;
+uint8_t CzarController::getTransmitPower(void) {
+  return _transmitPower;
 }
 
-uint8_t CzarController::getBand() {
-  return _configuration.band;
+uint8_t CzarController::getBand(void) {
+  return _band;
 }
 
-uint8_t CzarController::getChannel() {
-  return _configuration.channel;
+uint8_t CzarController::getChannel(void) {
+  return _channel;
 }
 
-uint16_t CzarController::getPanId() {
-  return _configuration.panId;
+uint16_t CzarController::getPanId(void) {
+  return _panId;
 }
 
-uint16_t CzarController::getAddress() {
-  return _configuration.address;
+uint16_t CzarController::getAddress(void) {
+  return _address;
 }
 
-const char* CzarController::getTransmitPowerDb() {
-  switch (_configuration.transmitPower) {
+const char* CzarController::getTransmitPowerDb(void) {
+  switch (_transmitPower) {
     case 0:
-      return PSTR("3.5 dBm");
+      return "3.5 dBm";
       break;
     case 1:
-      return PSTR("3.3 dBm");
+      return "3.3 dBm";
       break;
     case 2:
-      return PSTR("2.8 dBm");
+      return "2.8 dBm";
       break;
     case 3:
-      return PSTR("2.3 dBm");
+      return "2.3 dBm";
       break;
     case 4:
-      return PSTR("1.8 dBm");
+      return "1.8 dBm";
       break;
     case 5:
-      return PSTR("1.2 dBm");
+      return "1.2 dBm";
       break;
     case 6:
-      return PSTR("0.5 dBm");
+      return "0.5 dBm";
       break;
     case 7:
-      return PSTR("-0.5 dBm");
+      return "-0.5 dBm";
       break;
     case 8:
-      return PSTR("-1.5 dBm");
+      return "-1.5 dBm";
       break;
     case 9:
-      return PSTR("-2.5 dBm");
+      return "-2.5 dBm";
       break;
     case 10:
-      return PSTR("-3.5 dBm");
+      return "-3.5 dBm";
       break;
     case 11:
-      return PSTR("-4.5 dBm");
+      return "-4.5 dBm";
       break;
     case 12:
-      return PSTR("-6.5 dBm");
+      return "-6.5 dBm";
       break;
     case 13:
-      return PSTR("-8.5 dBm");
+      return "-8.5 dBm";
       break;
     case 14:
-      return PSTR("-11.5 dBm");
+      return "-11.5 dBm";
       break;
     case 15:
-      return PSTR("-16.5 dBm");
+      return "-16.5 dBm";
       break;
     default:
-      return PSTR("Unknown");
+      return "Unknown";
       break;
   }
 }
 
-const char* CzarController::getDataRateKbps() {
-  switch (_configuration.dataRate) {
+const char* CzarController::getDataRateKbps(void) {
+  switch (_dataRate) {
     case 0:
-      return PSTR("250 kb/s");
+      return "250 kb/s";
       break;
     case 1:
-      return PSTR("500 kb/s");
+      return "500 kb/s";
       break;
     case 2:
-      return PSTR("1 Mb/s");
+      return "1 Mb/s";
       break;
     case 3:
-      return PSTR("2 Mb/s");
+      return "2 Mb/s";
       break;
     default:
-      return PSTR("Unknown");
+      return "Unknown";
       break;
   }
 }

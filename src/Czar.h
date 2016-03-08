@@ -1,13 +1,13 @@
 // The MIT License (MIT)
 // Copyright (c) 2016 Maxmillion McLaughlin
-
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
 
@@ -24,9 +24,6 @@
 #ifdef PHY_ATMEGARFR2
   #include "lwm/phy/atmegarfr2.h"
 #endif // PHY_ATMEGARFR2
-
-#include "CzarCommandReq.h"
-#include "CzarDataReq.h"
 
 class CzarController {
 
@@ -84,33 +81,3 @@ class CzarController {
 extern CzarController Czar;
 
 #endif // _CZAR_H
-
-/*
-    struct infoReq_t : public NWK_DataReq_t {
-       infoReq_t()
-       {
-          dstEndpoint = 1;
-          srcEndpoint = 1;
-          options = NWK_OPT_ACK_REQUEST;
-       }
-
-       char  info[];
-    } _infoReq;
-
-    struct commandReq_t : public NWK_DataReq_t {
-       commandReq_t()
-       {
-          dstEndpoint = 2;
-          srcEndpoint = 2;
-          options = NWK_OPT_ACK_REQUEST;
-          strcpy(newVar, "Hello");
-
-          confirm     = &commandReqConf;
-       }
-
-       uint8_t duration;
-
-       char  newVar[20];
-
-    } _commandReq;
-*/

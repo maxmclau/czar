@@ -16,9 +16,6 @@
 
 CzarController Czar;
 
-static void commandReqConf(NWK_DataReq_t *req);
-CzarCommandReq_t commandReq(commandReqConf);
-
 CzarController::CzarController() { }
 
 CzarController::~CzarController() { }
@@ -35,14 +32,6 @@ void CzarController::loop() {
 
 void CzarController::listen(uint8_t endpoint, bool (*handler)(NWK_DataInd_t *ind)) {
   NWK_OpenEndpoint(endpoint, handler);
-}
-
-static void commandReqConf(NWK_DataReq_t *req) {
-  if (NWK_SUCCESS_STATUS == req->status) {
-
-  } else {
-
-  }
 }
 
 void CzarController::joinGroup(uint16_t groupAddress) {

@@ -1,4 +1,4 @@
-# Czar
+# Czar [inactive]
 
 [Atmel Lightweight Mesh](http://www.atmel.com/tools/lightweight_mesh.aspx) abstraction layer written in C++.
 
